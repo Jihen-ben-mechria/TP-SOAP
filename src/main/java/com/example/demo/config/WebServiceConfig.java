@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +21,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(context);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/ws/*");
+        ServletRegistrationBean<MessageDispatcherServlet> bean = new ServletRegistrationBean<>(servlet, "/ws/*");
+        bean.setLoadOnStartup(1);
+        return bean;
     }
 
-    @Bean(name = "currency-converter") // Nom du WSDL : currency-converter.wsdl
+    @Bean(name = "currencyConverter")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema currencySchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("CurrencyConverterPort");
